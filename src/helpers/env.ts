@@ -1,10 +1,13 @@
 import { config } from "dotenv";
-import { num, cleanEnv } from "envalid";
+import { num, str, cleanEnv } from "envalid";
 
 config()
 
 const ENV = cleanEnv(process.env, {
-  SERVER_PORT: num()
+  SERVER_PORT: num(),
+  MONGO_URI: str(),
+  DATA_FILE_PATH: str(),
+  PLANETS_BATCH_SIZE: num()
 });
 
 export default ENV;
