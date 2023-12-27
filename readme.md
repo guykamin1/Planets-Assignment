@@ -18,12 +18,12 @@ On Linux based - Just run "bash start.sh/stop.sh" inside the scripts/bash folder
 
 Option2 - Locally:
 
-1 - Run "npm i" for installing all dependencies.
-2 - Run "npm run build" for compiling the project.
-3 - Copy the assets folder from src to dist.
-4 - Edit MONGO_URI in the .env file to your mongo uri. 
-5 - Edit PLANETS_FILE_PATH in the .env file to the path of your dist/assets/planets.csv file.
-5 - Run "npm start" for running the service.
+ - Run "npm i" for installing all dependencies. 
+ - Run "npm run build" for compiling the project.
+ - Copy the assets folder from src to dist.
+ - Edit MONGO_URI in the .env file to your mongo uri. 
+ - Edit PLANETS_FILE_PATH in the .env file to the path of your dist/assets/planets.csv file.
+ - Run "npm start" for running the service.
 
 ### Dependencies
 
