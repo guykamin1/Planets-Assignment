@@ -1,16 +1,15 @@
 import fs from 'fs/promises'
 import csv from 'csv-parser'
-import ENV from '../../helpers/env'
+import Env from '../../helpers/env'
+import PlanetModel from './models/plans';
 import { z, string } from "zod";
-import { PlanetsModel } from './models/plans';
-import { CSVPlanet, DBPlanet } from '../../helpers/types/planets'
+import {  CsvPlanet, DbPlanet } from '../../helpers/types/planets'
 
-class DBHelper {
+class _MongoHelper {
     
     private planetsFile!: fs.FileHandle
-    //!Typscript problematic with this type...
-    private planetsReadStream: any
-    private dbPlanets: DBPlanet []
+    private planetsReadStream: any //!Typescript problematic with this type...
+    private dbPlanets: DbPlanet []
 
     constructor() {
         this.dbPlanets = []
@@ -20,17 +19,15 @@ class DBHelper {
 
         return new Promise(async (res,rej) => {
         
-        let planetsFile: fs.FileHandle 
-
         try{
-            planetsFile = await fs.open(ENV.DATA_FILE_PATH,'r')
+            this.planetsFile = await fs.open(Env.PLANETS_FILE_PATH,'r')
         }catch(err){
-            return Promise.reject(err)
+            return rej(err)
         }
 
-        const readStream = planetsFile.createReadStream().pipe(csv())
+         this.planetsReadStream = this.planetsFile.createReadStream().pipe(csv())
 
-        .on('data',(csvPlanet: CSVPlanet) => this.onData(csvPlanet))
+        .on('data',(csvPlanet: CsvPlanet) => this.onData(csvPlanet))
 
         .on('close',async () => {
              await this.planetsFile.close()
@@ -42,31 +39,28 @@ class DBHelper {
             rej(err)
         })
 
-        this.planetsFile = planetsFile
-        this.planetsReadStream = readStream
-
         })
 
     }
 
-    private async onData(csvPlanet: CSVPlanet): Promise<void>{
+    private async onData(csvPlanet: CsvPlanet): Promise<void>{
 
-        let dbPlanet: DBPlanet 
+        let dbPlanet: DbPlanet 
 
         try{
-            dbPlanet = this.convertCsvToDbPlanet(csvPlanet)
+            dbPlanet = this.csvToDbPlanet(csvPlanet)
         }catch(err){
             return this.planetsReadStream.emit('error',err)
         }
 
         this.dbPlanets.push(dbPlanet)
 
-        if(this.dbPlanets.length >= ENV.PLANETS_BATCH_SIZE){
+        if(this.dbPlanets.length >= Env.PLANETS_BATCH_SIZE){
 
             this.planetsReadStream.pause()
 
             try{
-                await PlanetsModel.insertMany(this.dbPlanets)
+                await PlanetModel.insertMany(this.dbPlanets)
             }catch(err){
                 return this.planetsReadStream.emit('error',err)
             }
@@ -78,7 +72,7 @@ class DBHelper {
 
     }
 
-    private convertCsvToDbPlanet(csvPlanet: CSVPlanet): DBPlanet{
+    private csvToDbPlanet(csvPlanet: CsvPlanet): DbPlanet{
 
         const validation = z.object({
             name: string(),
@@ -92,7 +86,7 @@ class DBHelper {
                     case 'false':
                         return false
         
-                    default: throw new Error(`Invalid csv planet confirmed: ${val}`)
+                    default: throw new Error(`Invalid csv planet, confirmed: ${val}`)
                         
                 }
             }),
@@ -100,14 +94,14 @@ class DBHelper {
         
                 const parsed = parseFloat(val)
         
-                if(Number.isNaN(parsed)) throw new Error(`Invalid csv planet distance: ${val}`)
+                if(Number.isNaN(parsed)) throw new Error(`Invalid csv planet, distance: ${val}`)
         
                 return parsed
         
             })
         })
 
-        let dbPlanet: DBPlanet
+        let dbPlanet: DbPlanet
 
         try{
             dbPlanet = validation.parse(csvPlanet)
@@ -121,4 +115,6 @@ class DBHelper {
 
 }
 
-export const DBHELPER = new DBHelper()
+const MongoHelper = new _MongoHelper()
+
+export default MongoHelper

@@ -5,6 +5,7 @@ import * as middlewares from "./middlewares";
 
 const router = Router()
 
+//!All routers will need authorization header and a valid token.
 router.use(
     tokenRequired(),
     middlewares.validate,

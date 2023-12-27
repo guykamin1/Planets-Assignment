@@ -1,6 +1,5 @@
-import { DBError } from "../../helpers/errors"
-import { PlanetsModel } from "../../services/mongo/models/plans"
-import { DBPlanet } from "../../helpers/types/planets"
+import { DbError } from "../../helpers/errors"
+import PlanetsModel from "../../services/mongo/models/plans"
 
 export const getPlanets = async () => {
 
@@ -14,18 +13,10 @@ export const getPlanets = async () => {
         })
         return planets
     }catch(err){
-        throw new DBError('planets','fetching')
+        throw new DbError('planets','fetching')
     }
 
 }
 
-
-export const createPlanets = async (planets: DBPlanet []) => {
-    try{
-        await PlanetsModel.insertMany(planets)
-    }catch(err){
-        throw err
-    }
-}
 
 

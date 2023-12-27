@@ -1,18 +1,20 @@
 import 'express-async-errors'
 import express from 'express'
-import ENV from './helpers/env'
+import Env from './helpers/env'
+import Mongo from './services/mongo'
+import MongoHelper from './services/mongo/helper'
 import apiRouter from './api/router'
 import { handleError } from './api/middlewares'
-import { MONGO } from './services/mongo'
-import { DBHELPER } from './services/mongo/helper'
 
 (async () => {
 
     try{
-        await MONGO.connect()
-        await DBHELPER.handlePlanetsReadStream()
+        await Mongo.connect()
+        await MongoHelper.handlePlanetsReadStream()
     }catch(err){
-        return
+        //!Maybe different behavior?
+        console.log(err);
+        process.exit(1)
     }
 
     const app = express()
@@ -23,8 +25,8 @@ import { DBHELPER } from './services/mongo/helper'
 
     app.use(handleError)
 
-    app.listen(ENV.SERVER_PORT, () => {
-    console.log(`Example app listening on port ${ENV.SERVER_PORT}`)
+    app.listen(Env.SERVER_PORT, () => {
+    console.log(`Example app listening on port ${Env.SERVER_PORT}`)
     })
 
 })()

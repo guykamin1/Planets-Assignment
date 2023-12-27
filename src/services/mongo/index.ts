@@ -1,20 +1,26 @@
 import { connect } from 'mongoose'
-import ENV from '../../helpers/env'
+import Env from '../../helpers/env'
 
-class Mongo {
+class _Mongo {
 
     constructor() {}
 
     async connect(): Promise<void>{
 
         try{
-            await connect(ENV.MONGO_URI)
+            await connect(Env.MONGO_URI+Env.MONGO_DB)
         }catch(err){
             throw err
         }
 
     }
 
+
+    //!More methods related to mongo...
+
+
 }
 
-export const MONGO = new Mongo()
+const Mongo = new _Mongo()
+
+export default Mongo

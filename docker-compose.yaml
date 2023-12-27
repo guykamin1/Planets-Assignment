@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+
+  mongo:
+      container_name: mongo
+      image: mongo
+      restart: always
+
+  planets:
+    container_name: planets
+    depends_on:
+      - mongo
+    image: planets:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+    - .env
+    ports:
+    #!Left side: the port that you want to access from your computer
+    #!Right side: the port of the server which you wrote in the .env
+      - 3000:3000

@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { DBPlanet } from '../../../helpers/types/planets';
+import { DbPlanet } from '../../../helpers/types/planets';
 
 const planetsCollectionName = 'planets'
 
-const PlanetSchema = new Schema<DBPlanet>({
+const planetSchema = new Schema<DbPlanet>({
   name:{
     type: String,
     required: true
@@ -18,5 +18,7 @@ const PlanetSchema = new Schema<DBPlanet>({
   }
 });
   
-export const PlanetsModel = model<DBPlanet>(planetsCollectionName, PlanetSchema);
+const PlanetsModel = model<DbPlanet>(planetsCollectionName, planetSchema);
+
+export default PlanetsModel
   

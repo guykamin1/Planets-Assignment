@@ -1,3 +1,3 @@
-export interface dataObject {
+export interface DataObject {
     [key: string]: any
 }

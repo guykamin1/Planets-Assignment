@@ -1,3 +1,5 @@
+//!General validations chains functions for the different routers
+
 import { header } from "express-validator"
 
 export const tokenRequired = () => [

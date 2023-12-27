@@ -12,7 +12,7 @@ class _Error extends Error {
     }
 }
 
-export class DBError extends _Error {
+export class DbError extends _Error {
 
     constructor(collection: string, action: string) {
         super(500,[`Error ${action} ${collection} with DB!`])

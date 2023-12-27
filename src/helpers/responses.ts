@@ -1,0 +1,1 @@
+export const success = (payload: any) => ({success: true, payload})
