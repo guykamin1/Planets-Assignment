@@ -10,13 +10,13 @@ Simple service for loading planets data from csv file and allowing accessing it 
 
 After cloning the project on your computer you basiclly have 2 options.
 
-Option1 - Docker:
+#### Option1 - Docker:
 
 On Windows - Just double click the start.bat/stop.bat files in the scripts/bat folder to run or stop the service.
 
 On Linux based - Just run "bash start.sh/stop.sh" inside the scripts/bash folder to run or stop the service.
 
-Option2 - Locally:
+#### Option2 - Locally:
 
  - Run "npm i" for installing all dependencies. 
  - Run "npm run build" for compiling the project.
@@ -27,11 +27,11 @@ Option2 - Locally:
 
 ### Dependencies
 
-Option1:
+#### Option1:
 - Git installed.
 - Docker installed.
 
-Option2:
+#### Option2:
 - Git installed.
 - Node + Npm + Typescript installed.
 - Mongo installed.
