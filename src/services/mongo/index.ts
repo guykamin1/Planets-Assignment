@@ -5,7 +5,7 @@ class Mongo {
 
     constructor() {}
 
-    async connect(){
+    async connect(): Promise<void>{
 
         try{
             await connect(ENV.MONGO_URI)

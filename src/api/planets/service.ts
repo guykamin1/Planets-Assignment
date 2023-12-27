@@ -6,9 +6,10 @@ export const getPlanets = async () => {
 
     try{
         const planets = await PlanetsModel.find({
+            //!No specific reason...
             confirmed: true,
             distance:{
-                $gt: 5000
+                $gte: 5000
             }
         })
         return planets
